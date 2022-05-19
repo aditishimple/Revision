@@ -1,0 +1,217 @@
+1)What is hoisting?
+    - Hoisting is the default behavior of moving all the declarations at the top of the scope before code execution.
+
+2) What is scoping?
+    - Scope in JavaScript refers to the current context of code, which determines the accessibility of variables to JavaScript.
+    - The two types of scope are local and global: Global variables are those declared outside of a block. Local variables are those declared inside of a block.
+
+3) How are var, let, const differ?
+    - Scope:
+        var - Functional scope, default value is undefined.
+        let - Block scope, returns error if not initialized.
+        const - Block scope
+    - Updation and declaration:
+        var - Can be updated and re-declared.
+        let - Can be updated but cannot be re-declared into the scope.
+        const - Cannot be updated or re-declared.
+
+4) What are the two main differences in arrow functions?
+    - Main difference in arrow functions:
+        - Arrow function don't have keyword: this, if accessed will taken from outside(parent).
+        - Arrow function can't be called with keyword: new.
+        - Arrow function don't have arguments, if accessed will give ReferenceError: arguments is not defined.
+
+5) Does Call apply bind work for arrow functions?
+    - No, because they were designed for executing in different scopes, but arrow function use scope of parent.
+    - Since arrow functions do not have their own this, the methods call() or apply() can only pass in parameters.
+
+6) What does call apply bind do?
+    - The call() and apply() are very similar methods. They both execute the bound function on the object immediately.
+    - The bind() method does not execute the function right away. Instead, it creates and returns a bound function that can be executed later.
+
+7) What are closures?
+    - A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment).
+    - In other words, a closure gives you access to an outer function's scope from an inner function.
+
+8) Write a program to debounce a search bar?
+    - Debouncing: It limits the rate at which a function gets invoked.
+    - Program:
+        <html>
+            <body>
+                <button id="debounce">
+                    Debounce
+                </button>
+            <script>
+                var button = document.getElementById("debounce");
+                const debounce = (func, delay) => {
+                    let debounceTimer
+                    return function() {
+                        const context = this
+                        const args = arguments
+                            clearTimeout(debounceTimer)
+                                debounceTimer
+                            = setTimeout(() => func.apply(context, args), delay)
+                    }
+                }
+                button.addEventListener('click', debounce(function() {
+                        alert("Hello\nNo matter how many times you" +
+                            "click the debounce button, I get " +
+                            "executed once every 3 seconds!!")
+                                        }, 3000));
+            </script>
+        </body>
+    </html>
+
+9) Write a program to throttle a search bar?
+    - Throttling: Executing after every X milliseconds, only first event is executed immediately.
+    - Program:
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <meta name="viewport"
+                        content="width=device-width, initial-scale=1.0">
+                <title>
+                    JavaScript | With Throttling
+                </title>
+                </head>
+                <body>
+                    <button id="throttle">Click Me</button>
+                    <script>
+                        const btn=document.querySelector("#throttle");
+                        
+                        // Throttling Function
+                        const throttleFunction=(func, delay)=>{
+                            let prev = 0;
+                            return (...args) => {
+                                let now = new Date().getTime();
+
+                                console.log(now-prev, delay);
+                                
+                                if(now - prev> delay){
+                                    prev = now;
+                                    return func(...args);
+                                }
+                            }
+                        }
+                        btn.addEventListener("click", throttleFunction(()=>{
+                        console.log("button is clicked")
+                        }, 1500));
+                    </script>
+                </body>
+            </html>
+
+10) Create a custom method for an array called myMap, use prototype chain to achieve this:
+    const arr = [1,2,3]
+    arr.myMap(a => a*5)
+    // [ 5, 10, 15 ]
+    it should work in this manner
+
+    - Program:
+        const arr = [];
+        arr.__proto__.myMap = function(arr, func) {    
+        const mapArr = []; 
+        for(let i=0; i<arr.length; i++) {        
+            const result = func(arr[i], i, arr);        
+            mapArr.push(result);    
+        }    
+        return mapArr;
+    }
+    arr.myMap([1,2,3,4,5], (item) => item * 5);
+
+    // output: [5, 10, 15, 20, 25];
+
+11) What is event bubbling?
+    - Event bubbling is a method of event propagation in the HTML DOM API when an event is in an element inside another element, and both elements have registered a handle to that event.
+    - It is a process that starts with the element that triggered the event and then bubbles up to the containing elements in the hierarchy.
+
+12) What is event loop?
+    - It is a gate keeper which constantly checks the call stack and callback queue.
+    - It keeps running continuously and checks the main stack, if it has any frames to execute, if not, then checks callback queue, if callback queue has codes to execute then it pops the message from it to the main stack for execution.
+
+13) Explain promises to a 5 year old, with simple examples
+    - The code does not directly or immediately return a value. Instead, it returns a promise that it will eventually provide the value at a later time.
+    - A promise in JavaScript is asynchronous, meaning it takes time to resolve or finish. Just as the search for the applicant's resume takes time to complete.
+    - Let's assume there is a teacher and student. Now teacher told the student to complete the homework in one week of time and student promised the teacher that homework will be completed in the given deadline. 
+      So, after one week if the homework is completed by student => then the promise made is resolved, else if homework is not completed then the promise made by student is broken(rejected).
+      But in either case there is the responsibility of student to inform the teacher.
+
+14) Write a function called sleep that will return a promise, if you do not provide a number to the function, then it will return an error and goto the catch block
+    - Program:
+        const sleep = function(time) {
+                    return new Promise((resolve, reject) => {
+                        if(typeof(time)==='number') resolve(`success`);
+                        else  reject(`invalid argument, promise accepts only valid numbers`);
+                    });
+            };
+            sleep(500)
+                .then(res => console.log(`slept for ${res} milli seconds`))
+                .then(err => console.log(err));
+
+15) What does async await mean?
+    - An async function is a function declared with the async keyword, and the await keyword is permitted within it.
+    - Async-await is the better way than using .then().catch(). The word async means that a promise will be returned, and await means waiting until the promise gets fulfilled or rejected.
+
+16) What does the this keyword mean?
+    - this keyword is referred to the object, which is executing that scope. And the value of this is evaluated at run-time.
+
+17) What are classes? what are getters and setters?
+    - Classes are template for creating object, which contains properties and methods.
+    - getters => they help in getting/accessing the properties.
+    - setters => they help in changing/setting the values.
+
+18) How do you declare private and static variables in classes?
+    - static   : using keyword: static before variable or function declaration.
+    - private  : using keyword: # with variable or function declaration.
+
+19) Create a Calculator class, it should be able to add, reduce multiply and divide. it should have a value getter, and that should return final output. keep the history of changes made as well, and keep that private, and a user should be able to see previous changes made to the value.
+    - Program:
+        class Calculator {
+            #history;
+            constructor(a, b) {
+                this.a = a;
+                this.b = b;
+                this.#history = [];
+            }
+
+            add() {
+                this.#history.push('add');
+                return this.a + this.b;
+            }
+            reduce() {
+                this.#history.push('reduce');
+                return this.a - this.b;
+            }
+            multiply() {
+                this.#history.push('multiply');
+                return this.a * this.b;
+            }
+            divide() {
+                this.#history.push('divide');
+                return this.a / this.b;
+            }
+            showHistory() {
+                return this.#history;
+            }
+        }
+
+20) What is currying?
+    - Currying is a advanced technique of working with functions, it basically transforms the function calling from multiple argument passing to a sequence of function with single argument.
+
+21) Write a program to flatten an array
+// input: [ 1, [ 2, 3 ], [ 3 ], [ [[5]],  6]  ]
+// output => [ 1, 2, 3, 3, 5, 6 ]
+
+    - Flatten Array :- Flattening an array is a process of reducing the dimensionality of an array. In other words, it a process of reducing the number of dimensions of an array to a lower number.
+    Program :- 
+        const flattenArray = (arr) => {
+            const ans = [];
+                if (Array.isArray(arr)) {
+                    for (let x = 0; x < arr.length; x++) {
+                    ans.push(...flattenArray(arr[x]));
+                    }
+                    return ans;
+                }
+            return [arr];
+        };
+        console.log(flattenArray([1, [2, 3], [3], [[[5]], 6]]));
